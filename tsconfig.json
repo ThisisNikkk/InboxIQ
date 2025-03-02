@@ -3,7 +3,7 @@
     /* Base Options: */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "ES2022",
+    "target": "es2022",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
@@ -13,13 +13,12 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
-    "forceConsistentCasingInFileNames": true,
 
     /* Bundled projects */
     "lib": ["dom", "dom.iterable", "ES2022"],
     "noEmit": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
     "incremental": true,
@@ -37,7 +36,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "next.config.mjs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "*.json"]
 }

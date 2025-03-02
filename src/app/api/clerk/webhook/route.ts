@@ -1,6 +1,6 @@
 // /api/clerk/webhook
 
-import { db } from "@/server/db.js"
+import { db } from "@/server/db"
 
 export const POST = async (req: Request) => {
     const {data} = await req.json()
