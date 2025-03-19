@@ -1,15 +1,16 @@
-import { Configuration, OpenAIApi } from "openai-edge";
 import { type Message } from "ai";
-import OpenAI from 'openai'
+//import { StreamingTextResponse } from "ai/streams";
+import { Configuration, OpenAIApi } from "openai-edge";
+//import { OpenAIStream } from 'ai/streams';
 import { NextResponse } from "next/server";
 import { OramaManager } from "@/lib/orama";
 import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
 import { getSubscriptionStatus } from "@/lib/stripe-actions";
 import { FREE_CREDITS_PER_DAY } from "@/app/constants";
-import { StreamingTextResponse, OpenAIStream  } from "ai/react";
+import { StreamingTextResponse } from "ai/react";
 
-// export const runtime = "edge";
+export const runtime = "edge";
 
 const config = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -47,8 +48,6 @@ export async function POST(req: Request) {
         await oramaManager.initialize()
 
         const lastMessage = messages[messages.length - 1]
-
-
         const context = await oramaManager.vectorSearch({ prompt: lastMessage.content })
         console.log(context.hits.length + ' hits found')
         // console.log(context.hits.map(hit => hit.document))
@@ -71,7 +70,6 @@ export async function POST(req: Request) {
       - Keep your responses concise and relevant to the user's questions or the email being composed.`
         };
 
-
         const response = await openai.createChatCompletion({
             model: "gpt-4",
             messages: [
@@ -80,9 +78,8 @@ export async function POST(req: Request) {
             ],
             stream: true,
         });
+
         const stream = OpenAIStream(response, {
-            onStart: async () => {
-            },
             onCompletion: async (completion) => {
                 const today = new Date().toDateString()
                 await db.chatbotInteraction.update({
@@ -98,13 +95,15 @@ export async function POST(req: Request) {
                 })
             },
         });
+
         return new StreamingTextResponse(stream);
     } catch (error) {
-        console.log(error)
+        console.error('Chat error:', error);
         return NextResponse.json({ error: "error" }, { status: 500 });
     }
 }
-function OpenAIStream(response: Response, arg1: { onStart: () => Promise<void>; onCompletion: (completion: any) => Promise<void>; }) {
+
+function OpenAIStream(response: Response, arg1: { onCompletion: (completion: any) => Promise<void>; }) {
     throw new Error("Function not implemented.");
 }
 
