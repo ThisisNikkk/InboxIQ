@@ -3,7 +3,12 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
-  '/api/clerk/webhook(.*)',
+  '/api/webhooks(.*)',
+  '/api/initial-sync(.*)',
+  '/api/aurinko/webhook(.*)',
+  '/api/stripe(.*)',
+  '/privacy',
+  '/terms-of-service'
 ])
 
 export default clerkMiddleware(async (auth, request) => {
@@ -12,6 +17,8 @@ export default clerkMiddleware(async (auth, request) => {
   }
 })
 
+
+
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
@@ -19,4 +26,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}
+};

@@ -6,10 +6,10 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
-    typescript:{
+    typescript: {
         ignoreBuildErrors: true,
     },
-    eslint:{
+    eslint: {
         ignoreDuringBuilds: true,
     },
 };
