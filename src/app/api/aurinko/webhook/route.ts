@@ -1,13 +1,12 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import axios from "axios";
 import Account from "@/lib/account";
 import { db } from "@/server/db";
-import { waitUntil } from "@vercel/functions";
 
 const AURINKO_SIGNING_SECRET = process.env.AURINKO_SIGNING_SECRET;
 
-export const POST = async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
     console.log("POST request received");
     const query = req.nextUrl.searchParams;
     const validationToken = query.get("validationToken");
@@ -56,11 +55,11 @@ export const POST = async (req: NextRequest) => {
         return new Response("Account not found", { status: 404 });
     }
     const acc = new Account(account.token)
-    waitUntil(acc.syncEmails().then(() => {
+    acc.syncEmails().then(() => {
         console.log("Synced emails")
-    }))
+    })
 
     // Process the notification payload as needed
 
-    return new Response(null, { status: 200 });
+    return NextResponse.json({ status: 'success' });
 };

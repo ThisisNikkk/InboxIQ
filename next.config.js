@@ -12,6 +12,9 @@ const config = {
     eslint: {
         ignoreDuringBuilds: true,
     },
+    experimental: {
+        serverComponentsExternalPackages: ['@vercel/functions']
+    }
 };
 
 export default config;
