@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 import Image from 'next/image'
 
 const LandingPage = async () => {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (userId) {
         return redirect('/mail')
     }
@@ -23,7 +23,7 @@ const LandingPage = async () => {
                 </h1>
                 <div className="h-4"></div>
                 <p className="text-xl mb-8 text-gray-600 max-w-xl text-center">
-                    Normal Human is a minimalistic, AI-powered email client that empowers you to manage your email with ease.
+                    InboxIQ is a minimalistic, AI-powered email client that empowers you to manage your email with ease.
                 </p>
                 <div className="space-x-4">
                     <Button>
