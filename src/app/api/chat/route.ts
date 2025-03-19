@@ -1,12 +1,13 @@
 import { Configuration, OpenAIApi } from "openai-edge";
-import { Message, OpenAIStream, StreamingTextResponse } from "ai";
-
+import { type Message } from "ai";
+import OpenAI from 'openai'
 import { NextResponse } from "next/server";
 import { OramaManager } from "@/lib/orama";
 import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
 import { getSubscriptionStatus } from "@/lib/stripe-actions";
 import { FREE_CREDITS_PER_DAY } from "@/app/constants";
+import { StreamingTextResponse, OpenAIStream  } from "ai/react";
 
 // export const runtime = "edge";
 
@@ -103,3 +104,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "error" }, { status: 500 });
     }
 }
+function OpenAIStream(response: Response, arg1: { onStart: () => Promise<void>; onCompletion: (completion: any) => Promise<void>; }) {
+    throw new Error("Function not implemented.");
+}
+
